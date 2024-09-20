@@ -1,0 +1,251 @@
+1 - 
+
+def retangulo(m,n):
+    area_retangulo = m * n
+    return area_retangulo
+    
+x = retangulo(10,5)
+
+print(x)
+
+------------------------------------------------------------------------------------------------
+
+2 - 
+
+def formatar_data(dia, mes, ano):
+    data = f"{dia}/{mes}/{ano}"
+    return data
+
+data_formatada = formatar_data(mes=11,dia=15, ano=2027)
+
+print(data_formatada)
+
+------------------------------------------------------------------------------------------------
+
+3 - 
+
+def cpf(n,d):
+    cpf = n
+    
+    # Tratamento de excessão para não informar todos os dados de erro ao usuário(Excessão tratada)
+    try:
+        if len(cpf) != 9:
+            raise ValueError("O CPF deve conter 9 dígitos iniciais.")
+    except ValueError as error:
+        print(error)
+        quit()
+
+    # Cálculo primeiro digito verificador
+    soma = sum(int(cpf[i]) * (10 - i) for i in range(9))
+    resto = soma % 11    
+    dv1 =  0 if resto < 2 else 11 - resto
+
+    # Cálculo segundo digito verificador
+    soma = sum(int(cpf[i]) * (11 - i) for i in range(9)) + dv1 * 2
+    resto = soma % 11
+    dv2 = 0 if resto < 2 else 11 - resto
+
+    # Verifica se o digito verificador informado é igual ao calculado
+    return True if d == f"{dv1}{dv2}" else False
+
+teste = cpf("345702519","74")
+
+print(teste)
+
+----------------------------------------------------------------
+
+4 - 
+
+----------main.py-----------------------------------------------
+
+    from operacoes import soma, subtracao, multiplicacao, divisao, resto, potencia, raiz, fatorial, seno, cosseno, tangente, logaritmo
+
+def aplicar_operacao(num1=None, num2=None, operacao=None):
+    if operacao is None:
+        raise ValueError("A operação deve ser fornecida.")
+    
+    if num1 is not None and num2 is not None:
+        return operacao(num1, num2)
+    elif num1 is not None:
+        return operacao(num1)
+    else:
+        raise ValueError("Pelo menos um número deve ser fornecido.")
+
+# Testando a função aplicar_operacao com várias operações
+print("Soma: ", aplicar_operacao(5, 3, soma))           # Saída: 8
+print("Subtração: ", aplicar_operacao(5, 3, subtracao)) # Saída: 2
+print("Multiplicação: ", aplicar_operacao(5, 3, multiplicacao)) # Saída: 15
+print("Divisão: ", aplicar_operacao(6, 3, divisao))     # Saída: 2.0
+print("Resto: ", aplicar_operacao(7, 3, resto))         # Saída: 1
+print("Potência: ", aplicar_operacao(2, 3, potencia))   # Saída: 8
+print("Raiz quadrada: ", aplicar_operacao(9, operacao=raiz))  # Saída: 3.0
+print("Fatorial: ", aplicar_operacao(5, operacao=fatorial))  # Saída: 120
+print("Seno: ", aplicar_operacao(30, operacao=seno))    # Saída: 0.49999 (aproximado)
+print("Cosseno: ", aplicar_operacao(60, operacao=cosseno))  # Saída: 0.49999 (aproximado)
+print("Tangente: ", aplicar_operacao(45, operacao=tangente)) # Saída: 1.0
+print("Logaritmo: ", aplicar_operacao(100, 10, logaritmo))  # Saída: 2.0
+
+----------operacoes.py------------------------------------
+
+    import math
+
+# Função de soma
+def soma(a, b):
+    return a + b
+
+# Função de subtração
+def subtracao(a, b):
+    return a - b
+
+# Função de multiplicação
+def multiplicacao(a, b):
+    return a * b
+
+# Função de divisão
+def divisao(a, b):
+    if b == 0:
+        raise ValueError("Divisão por zero não é permitida.")
+    return a / b
+
+# Função de resto
+def resto(a, b):
+    if b == 0:
+        raise ValueError("Divisão por zero não é permitida.")
+    return a % b
+
+# Função de potência
+def potencia(a, b):
+    return a ** b
+
+# Função de raiz quadrada
+def raiz(a):
+    if a < 0:
+        raise ValueError("Não é possível calcular a raiz quadrada de um número negativo.")
+    return a ** 0.5
+
+# Função de fatorial
+def fatorial(a):
+    if a < 0 or int(a) != a:
+        raise ValueError("Fatorial só está definido para números inteiros não negativos.")
+    resultado = 1
+    for i in range(2, int(a) + 1):
+        resultado *= i
+    return resultado
+
+# Funções trigonométricas
+def seno(x):
+    # Implementação simples usando série de Taylor (precisa de mais precisão para grandes valores de x)
+    x_rad = x % 360
+    x_rad = x_rad * (math.pi / 180)
+    seno = 0
+    for n in range(10):
+        termo = ((-1) ** n) * (x_rad ** (2 * n + 1)) / fatorial(2 * n + 1)
+        seno += termo
+    return seno
+
+def cosseno(x):
+    # Implementação simples usando série de Taylor (precisa de mais precisão para grandes valores de x)
+    x_rad = x % 360
+    x_rad = x_rad * (math.pi / 180)
+    cosseno = 0
+    for n in range(10):
+        termo = ((-1) ** n) * (x_rad ** (2 * n)) / fatorial(2 * n)
+        cosseno += termo
+    return cosseno
+
+def tangente(x):
+    return seno(x) / cosseno(x)
+
+def logaritmo(a, base=10):
+    if a <= 0 or base <= 0:
+        raise ValueError("Logaritmo não definido para valores menores ou iguais a zero.")
+    return math.log(a, base)
+
+--------------------------------------------------------------------------------
+
+5 -
+
+def fatorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * fatorial(n - 1)
+
+def potencia(base, expoente):
+    if expoente == 0:
+        return 1
+    else:
+        return base * potencia(base, expoente - 1)
+
+def resto(dividendo, divisor):
+    if dividendo < divisor:
+        return dividendo
+    else:
+        return resto(dividendo - divisor, divisor)
+
+def quociente(dividendo, divisor):
+    if dividendo < divisor:
+        return 0
+    else:
+        return 1 + quociente(dividendo - divisor, divisor)
+
+def produto(a, b):
+    if b == 0:
+        return 0
+    else:
+        return a + produto(a, b - 1)
+
+def suc(n):
+    return n + 1
+
+def pred(n):
+    return n - 1
+
+def soma(n1, n2):
+    if n2 == 0:
+        return n1
+    else:
+        return soma(suc(n1), pred(n2))
+
+if __name__ == "__main__":
+    # Testes
+    print("Fatorial de 5:", fatorial(5))              # =120
+    print("Potência de 2^3:", potencia(2, 3))         # = 8
+    print("Resto de 7/3:", resto(7, 3))               # = 1
+    print("Quociente de 7/3:", quociente(8, 4))       # = 2
+    print("Produto de 3 e 4:", produto(2, 7))         # = 14
+    print("Soma de 3 e 4:", soma(5, 6))               # = 11
+
+--------------------------------------------------------------------------------
+
+6 - 
+
+def fibonacci(n):
+    if n == 1 or n == 2:
+        return 1
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+    
+if __name__ == '__main__':
+    n = int(input("Digite o valor de n (n>= 3):"))
+    if n < 3:
+        print("n deve ser um número maior ou igual a 3.")
+    else:
+        print(f"O {n}-ésimo termo da série de Fibonacci é: {fibonacci(n)}")
+
+--------------------------------------------------------------------------------
+
+7 - 
+
+def fibonacci(n):
+    if n == 1 or n == 2:
+        return 1
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+    
+if __name__ == '__main__':
+    n = int(input("Digite um valor (n>= 3):"))
+    if n < 3:
+        print("O valor deve ser maior ou igual a 3.")
+    else:
+        print(f"O {n}-ésimo termo da série de Fibonacci é: {fibonacci(n)}")
