@@ -25,3 +25,4 @@ expressoes = ["(())", "()()(()())", "( ) )", "((())", "()(()))", ""]
 for expressao in expressoes:
     resultado = verifica_parenteses(expressao)
     print(f"Expressão: {expressao} - Resultado: {resultado}")
+ 
